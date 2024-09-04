@@ -49,8 +49,7 @@ public class AuthenticateController : ControllerBase
         }
     }
 
-    //Endpoint for User//
-    //Enpoint for Register
+    //Enpoint for Register-user
     [HttpPost]
     [Route("register-user")]
     public async Task<IActionResult> RegisterUser([FromBody] RegisterModel model)
@@ -97,6 +96,111 @@ public class AuthenticateController : ControllerBase
         }
 
         return Ok(new ResponseModel { Status = "Success", Message = "User created successfully!" });
+    }
+
+    //Endpoint for Register-Manager
+    [HttpPost]
+    [Route("register-manager")]
+    public async Task<IActionResult> RegisterManager([FromBody] RegisterModel model)
+    {
+        //Check user same other user
+        var userExists = await _userManager.FindByNameAsync(model.Username);
+        if (userExists != null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseModel { Status = "Error", Message = "User already exists!" });
+        }
+        //Check email same other email
+        var emailExists = await _userManager.FindByEmailAsync(model.Email);
+        if (emailExists != null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseModel { Status = "Error", Message = "Email already exists!" });
+        }
+        //Create new user
+        IdentityUser user = new()
+        {
+            Email = model.Email,
+            SecurityStamp = Guid.NewGuid().ToString(),
+            UserName = model.Username
+        };
+        //Create new user in System
+        var result = await _userManager.CreateAsync(user, model.Password);
+        //Check user created in not done
+        if (!result.Succeeded)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseModel { Status = "error", Message = "User creation failed! Please check user details and try again." });
+        }
+        //Define role for Admin, Manager, User
+        if (!await _roleManager.RoleExistsAsync(UserRoleModel.Admin))
+        {
+            await _roleManager.CreateAsync(new IdentityRole(UserRoleModel.Admin));
+        }
+        if (!await _roleManager.RoleExistsAsync(UserRoleModel.Manager))
+        {
+            await _roleManager.CreateAsync(new IdentityRole(UserRoleModel.Manager));
+        }
+        if (!await _roleManager.RoleExistsAsync(UserRoleModel.User))
+        {
+            await _roleManager.CreateAsync(new IdentityRole(UserRoleModel.User));
+        }
+        else
+        {
+            await _userManager.AddToRoleAsync(user, UserRoleModel.Manager);
+        }
+
+        return Ok(new ResponseModel { Status = "Success", Message = "User register successfully!" });
+    }
+
+    //Endpoint for Register-Admin
+    [HttpPost]
+    [Route("register-admin")]
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
+    {
+        //Check user same other user
+        var userExists = await _userManager.FindByNameAsync(model.Username);
+        if (userExists != null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseModel { Status = "Error", Message = "User already exists!" });
+        }
+        //Check email same other email
+        var emailExists = await _userManager.FindByEmailAsync(model.Email);
+        if (emailExists != null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseModel { Status = "Error", Message = "Email already exists!" });
+        }
+        //Create new user
+        IdentityUser user = new()
+        {
+            Email = model.Email,
+            SecurityStamp = Guid.NewGuid().ToString(),
+            UserName = model.Username
+        };
+        //Create new user in System
+        var result = await _userManager.CreateAsync(user, model.Password);
+
+        //Check user created in not done
+        if (!result.Succeeded)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseModel { Status = "error", Message = "User creation failed! Please check user details and try again." });
+        }
+        //Define role for Admin, Manager, User
+        if (!await _roleManager.RoleExistsAsync(UserRoleModel.User))
+        {
+            await _roleManager.CreateAsync(new IdentityRole(UserRoleModel.User));
+        }
+        if (!await _roleManager.RoleExistsAsync(UserRoleModel.Manager))
+        {
+            await _roleManager.CreateAsync(new IdentityRole(UserRoleModel.Manager));
+        }
+        if (!await _roleManager.RoleExistsAsync(UserRoleModel.Admin))
+        {
+            await _roleManager.CreateAsync(new IdentityRole(UserRoleModel.Admin));
+        }
+        else
+        {
+            await _userManager.AddToRoleAsync(user, UserRoleModel.Admin);
+        }
+
+        return Ok(new ResponseModel { Status = "Success", Message = "User register successfully!" });
     }
 
     //Enpoint for Login

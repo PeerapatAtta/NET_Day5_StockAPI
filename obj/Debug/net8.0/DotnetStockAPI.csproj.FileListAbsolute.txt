@@ -111,3 +111,4 @@ E:\IT Study\04_Project\ITGenuis\AngularDotnet\DotnetStockAPI\bin\Debug\net8.0\Mi
 E:\IT Study\04_Project\ITGenuis\AngularDotnet\DotnetStockAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 E:\IT Study\04_Project\ITGenuis\AngularDotnet\DotnetStockAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 E:\IT Study\04_Project\ITGenuis\AngularDotnet\DotnetStockAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\IT Study\04_Project\ITGenuis\AngularDotnet\DotnetStockAPI\obj\Debug\net8.0\DotnetStockAPI.sourcelink.json
