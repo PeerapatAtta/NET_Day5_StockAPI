@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\DotnetStockAPI.csproj": {}
+    "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\DotnetStockAPI.csproj": {}
   },
   "projects": {
-    "e:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\DotnetStockAPI.csproj": {
+    "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\DotnetStockAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\DotnetStockAPI.csproj",
+        "projectUniqueName": "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\DotnetStockAPI.csproj",
         "projectName": "DotnetStockAPI",
-        "projectPath": "e:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\DotnetStockAPI.csproj",
+        "projectPath": "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\DotnetStockAPI.csproj",
         "packagesPath": "C:\\Users\\OFF-PC\\.nuget\\packages\\",
-        "outputPath": "e:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\obj\\",
+        "outputPath": "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\OFF-PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
