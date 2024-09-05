@@ -257,5 +257,84 @@ public class AuthenticateController : ControllerBase
             );
         return token;
     }
+
+    //Endpont for Logout
+    [HttpPost]
+    [Route("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var userName = User.Identity?.Name;
+        if (userName != null)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user != null)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+                return Ok(new ResponseModel { Status = "Success", Message = "Logout successfully!" });
+            }
+        }
+        return Ok();
+    }
+
+    //Endpoint for Refresh Token
+    [HttpPost]
+    [Route("refresh-token")]
+    public IActionResult RefreshToken([FromBody] RefreshTokenModel model)
+    {
+        var authHeader = Request.Headers["Authorization"];
+        if (authHeader.ToString().StartsWith("Bearer"))
+        {
+            var token = authHeader.ToString().Substring(7);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]!);
+
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var user = new
+                {
+                    Name = jwtToken.Claims.First(x => x.Type == "unique_name").Value,
+                    Role = jwtToken.Claims.First(x => x.Type == ClaimTypes.Role).Value
+                };
+
+                var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
+
+                var newToken = GetToken(authClaims);
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(newToken),
+                    expiration = newToken.ValidTo
+                });
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+        }
+
+        return Unauthorized();
+    }
+
+    public class RefreshTokenModel
+    {
+        public string? Token { get; set; }
+    }
+
+
 }
 
