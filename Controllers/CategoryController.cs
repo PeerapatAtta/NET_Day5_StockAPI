@@ -1,9 +1,12 @@
 //Endpoint for Category
 using DotnetStockAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetStockAPI.Controllers;
 
+//[Authorize(Roles = UserRoleModel.Admin+"," + UserRoleModel.Manager)]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 
