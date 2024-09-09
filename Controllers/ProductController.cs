@@ -155,7 +155,8 @@ public class ProductController : ControllerBase
 
             //Save image file in Database
             product.productpicture = fildeName;
-        } else
+        }
+        else
         {
             product.productpicture = "noimg.jpg";
         }
@@ -168,29 +169,59 @@ public class ProductController : ControllerBase
 
     //Endpont for Update Product
     [HttpPut("{id}")]
-    public ActionResult<product> UpdateProduct(int id, [FromBody] product product)
+    public async Task<ActionResult<product>> UpdateProduct(int id, [FromForm] product product, IFormFile? image)
     {
         //Find product by ID
-        var productData = _context.products.Find(id); //select * from product where id =1
+        //select * from product where id =1
+        //var productData = _context.products.Find(id); 
+        var existingProduct = _context.products.FirstOrDefault(p => p.productid == id);
 
-        if (productData == null)
+        //If not found id
+        if (existingProduct == null)
         {
             return NotFound();
         }
 
         //Update data in Products Table
-        productData.productname = product.productname; //update pro set productname = "...." where id = 1
-        productData.unitprice = product.unitprice;
-        productData.unitinstock = product.unitinstock;
-        productData.productpicture = product.productpicture;
-        productData.categoryid = product.categoryid;
-        productData.modifieddate = product.modifieddate;
+        existingProduct.productname = product.productname;
+        existingProduct.unitprice = product.unitprice;
+        existingProduct.unitinstock = product.unitinstock;
+        existingProduct.categoryid = product.categoryid;
+        existingProduct.modifieddate = product.modifieddate;
+
+        //If upload image
+        if (image != null)
+        {
+            //Create image file name by guid
+            string fildeName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            //Define path to uploads folder
+            string uploadFolder = Path.Combine(_env.WebRootPath, "uploads");
+            //Check there is uploads folder
+            if (!Directory.Exists(uploadFolder))
+            {
+                Directory.CreateDirectory(uploadFolder);
+            }
+
+            using (var fileStream = new FileStream(Path.Combine(uploadFolder, fildeName), FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+
+            //Delete old image file
+            if (existingProduct.productpicture != "noimg.jpg")
+            {
+                System.IO.File.Delete(Path.Combine(uploadFolder, existingProduct.productpicture!));
+            }
+
+            //Save image file in Database
+            existingProduct.productpicture = fildeName;
+        }
 
         //Update data in Products Table
         _context.SaveChanges();
 
         //Response to client as JSON
-        return Ok(productData);
+        return Ok(existingProduct);
     }
 
     //Endpont for Delete Product
