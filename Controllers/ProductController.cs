@@ -61,8 +61,9 @@ public class ProductController : ControllerBase
         }
 
         //If selected Category
-        if (selectedCategory.HasValue){
-            query = query.Where(p=>p.categoryid==selectedCategory.Value);
+        if (selectedCategory.HasValue)
+        {
+            query = query.Where(p => p.categoryid == selectedCategory.Value);
         }
         //Count all products
         var totalRecords = query.Count();
@@ -88,11 +89,32 @@ public class ProductController : ControllerBase
     public ActionResult<product> getProduct(int id)
     {
         //LINQ for get products by ID // slect * from product where id = id
-        var product = _context.products.Find(id);
+        //Connect product to category
+        var product = _context.products
+        .Join(
+            _context.categories,
+            p => p.categoryid,
+            c => c.categoryid,
+            (p, c) => new
+            {
+                p.productid,
+                p.productname,
+                p.unitprice,
+                p.unitinstock,
+                p.productpicture,
+                p.categoryid,
+                p.createddate,
+                p.modifieddate,
+                c.categoryname
+            }
+        )
+        .FirstOrDefault(p => p.productid == id);
+
         if (product == null)
         {
             return NotFound();
         }
+
         //Response to client as JSON
         return Ok(product);
     }
