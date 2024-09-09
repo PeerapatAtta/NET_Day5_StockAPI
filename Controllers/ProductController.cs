@@ -10,11 +10,19 @@ namespace DotnetStockAPI.Controllers;
 
 public class ProductController : ControllerBase
 {
-    //DI > Object+Constructor
+    //DI > Make new Object and Constructor
     private readonly ApplicationDbContext _context;
-    public ProductController(ApplicationDbContext context)
+
+    //IwebHostEnvironment is?
+    //ContentRootPath: Route to specific folder
+    //WebRootPath:Route to wwwroot folder
+    private readonly IWebHostEnvironment _env;
+
+    //Constructor
+    public ProductController(ApplicationDbContext context, IWebHostEnvironment env)
     {
         _context = context;
+        _env = env;
     }
 
     //Endpont for Get All Product
@@ -121,10 +129,37 @@ public class ProductController : ControllerBase
 
     //Endpont for Create Product
     [HttpPost]
-    public ActionResult<product> CreateProduct([FromBody] product product)
+    // public ActionResult<product> CreateProduct([FromBody] product product) => Basic Use
+    public async Task<ActionResult<product>> CreateProduct([FromForm] product product, IFormFile? image)
     {
         //Add data in Products Table
         _context.products.Add(product);
+
+        //If upload image
+        if (image != null)
+        {
+            //Create image file name by guid
+            string fildeName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            //Define path to uploads folder
+            string uploadFolder = Path.Combine(_env.WebRootPath, "uploads");
+            //Check there is uploads folder
+            if (!Directory.Exists(uploadFolder))
+            {
+                Directory.CreateDirectory(uploadFolder);
+            }
+
+            using (var fileStream = new FileStream(Path.Combine(uploadFolder, fildeName), FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+
+            //Save image file in Database
+            product.productpicture = fildeName;
+        } else
+        {
+            product.productpicture = "noimg.jpg";
+        }
+
         _context.SaveChanges();
 
         //Response to client as JSON
