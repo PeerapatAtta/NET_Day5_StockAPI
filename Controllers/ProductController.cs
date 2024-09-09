@@ -236,6 +236,14 @@ public class ProductController : ControllerBase
             return NotFound();
         }
 
+        //Check, there is exsiting image
+        if (product.productpicture != "noimg.jpg")
+        {
+           string uploadFolder = Path.Combine(_env.WebRootPath, "uploads");
+           //Delete image file
+           System.IO.File.Delete(Path.Combine(uploadFolder, product.productpicture!)); 
+        }
+
         //Delete data in Products Table
         _context.products.Remove(product);
         //Save Changes
