@@ -1,6 +1,7 @@
 //Endpoint for Category
 using DotnetStockAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetStockAPI.Controllers;
@@ -9,6 +10,7 @@ namespace DotnetStockAPI.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
+[EnableCors("MultiOrigin")]
 
 public class CategoryController : ControllerBase
 {

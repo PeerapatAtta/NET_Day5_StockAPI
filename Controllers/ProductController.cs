@@ -1,12 +1,15 @@
 //Product Controller
 using DotnetStockAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotnetStockAPI.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
+[EnableCors("MultiOrigin")]
 
 public class ProductController : ControllerBase
 {
