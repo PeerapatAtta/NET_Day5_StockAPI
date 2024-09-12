@@ -11,7 +11,7 @@ namespace DotnetStockAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[EnableCors("MultiOrigin")]
+[EnableCors("MultipleOrigins")]
 
 public class AuthenticateController : ControllerBase
 {

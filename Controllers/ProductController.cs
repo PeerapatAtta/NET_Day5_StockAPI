@@ -9,7 +9,7 @@ namespace DotnetStockAPI.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-[EnableCors("MultiOrigin")]
+[EnableCors("MultipleOrigins")]
 
 public class ProductController : ControllerBase
 {

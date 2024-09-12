@@ -8,12 +8,12 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//Add Entitity framework connect postgresql
+// For Entity Framework with Npgsql
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 // Adding Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -41,7 +41,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-//Allow CORS
+// Allow CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MultipleOrigins",
@@ -65,19 +65,22 @@ builder.Services.AddCors(options =>
             "http://localhost:3000", // React Apps
             "http://localhost:5173", // Vite Apps
             "http://localhost:5000", // Blazor Apps
-            "http://localhost:5001"  // Blazor Apps
+            "http://localhost:5001" // Blazor Apps
         )
         .SetIsOriginAllowedToAllowWildcardSubdomains()
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-    }
-    );
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+        // Allow specific headers
+        // .WithHeaders("Content-Type", "Authorization")
+        // Allow specific methods
+        // .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+    });
 });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-// Add and update Swagger UI
+
 builder.Services.AddSwaggerGen(
     options =>
     {
@@ -111,25 +114,30 @@ builder.Services.AddSwaggerGen(
     }
 );
 
-
-//Make app from builder
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) // Adjust according to your needs
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Redirect HTTP to HTTPS
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();  // Only use HTTPS redirection in non-development environments
+}
+
 app.UseHttpsRedirection();
 
-//Use CORS
+// Use CORS
 app.UseCors("MultipleOrigins");
 
-//
+// Add Authentication
 app.UseAuthentication();
 
+// Add Authorization
 app.UseAuthorization();
 
 app.MapControllers();
