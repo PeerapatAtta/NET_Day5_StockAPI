@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "JwsY1CI/1LUKOvHvnvdvF7PIDrKNZ4oex2MWg/ERfYk=",
+  "Hash": "nAGmpeBmnIBh6as81A9v7AblPJujBnCQxo00SrizQ8s=",
   "Source": "DotnetStockAPI",
   "BasePath": "_content/DotnetStockAPI",
   "Mode": "Default",
@@ -15,5 +15,44 @@
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\wwwroot\\uploads\\012a8fd4-7861-4df2-90b7-3c28b94fda8a.jpg",
+      "SourceId": "DotnetStockAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\wwwroot\\",
+      "BasePath": "_content/DotnetStockAPI",
+      "RelativePath": "uploads/012a8fd4-7861-4df2-90b7-3c28b94fda8a.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\012a8fd4-7861-4df2-90b7-3c28b94fda8a.jpg"
+    },
+    {
+      "Identity": "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\wwwroot\\uploads\\4b2d4111-f7f2-4a4b-9c47-99dd9064e3a3.jpg",
+      "SourceId": "DotnetStockAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\IT Study\\04_Project\\ITGenuis\\AngularDotnet\\DotnetStockAPI\\wwwroot\\",
+      "BasePath": "_content/DotnetStockAPI",
+      "RelativePath": "uploads/4b2d4111-f7f2-4a4b-9c47-99dd9064e3a3.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\4b2d4111-f7f2-4a4b-9c47-99dd9064e3a3.jpg"
+    }
+  ]
 }

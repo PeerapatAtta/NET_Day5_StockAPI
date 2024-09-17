@@ -123,6 +123,9 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) // Adjust
     app.UseSwaggerUI();
 }
 
+// Use Static Files
+app.UseStaticFiles();
+
 // Redirect HTTP to HTTPS
 if (!app.Environment.IsDevelopment())
 {
